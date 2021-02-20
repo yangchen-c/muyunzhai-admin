@@ -112,7 +112,7 @@
         </el-form-item>
         <el-form-item label="会馆展示图" :label-width="formLabelWidth">
           <!-- :headers="headers" -->
-          <el-upload :data="uploadData" :action="uploadPath" :show-file-list="false" :on-success="uploadUrl"
+          <el-upload :headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadUrl"
             :before-upload="checkFileSize" class="avatar-uploader" accept=".jpg, .jpeg, .png">
             <img v-if="form.photo" :src="form.photo" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -153,7 +153,7 @@
           </el-switch>
         </el-form-item>
         <el-form-item label="新人体验顶部展示图" :label-width="formLabelWidth">
-          <el-upload :data="uploadData1" :action="uploadPath" :show-file-list="false" :on-success="uploadUrl1"
+          <el-upload :headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadUrl1"
             :before-upload="checkFileSize" class="avatar-uploader" accept=".jpg, .jpeg, .png">
             <img v-if="form.experiencePhoto" :src="form.experiencePhoto" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -167,7 +167,7 @@
           </el-switch>
         </el-form-item>
         <el-form-item label="绿色通道顶部展示图" :label-width="formLabelWidth">
-          <el-upload :data="uploadData2" :action="uploadPath" :show-file-list="false" :on-success="uploadUrl2"
+          <el-upload :headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadUrl2"
             :before-upload="checkFileSize" class="avatar-uploader" accept=".jpg, .jpeg, .png">
             <img v-if="form.greenPhoto" :src="form.greenPhoto" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -240,6 +240,9 @@
     uploadPath,
   } from "@/api/api";
   import Pagination from "@/components/Pagination"; // Secondary package based on el-pagination
+  import {
+    getToken
+  } from '@/utils/auth'
 
   export default {
     name: "Stafff",
@@ -327,19 +330,26 @@
         formLabelWidth: "220px",
       };
     },
+    computed: {
+      headers() {
+        return {
+          Authorization: getToken()
+        }
+      }
+    },
     created() {
       this.getList();
     },
     methods: {
       // 文件上传
       uploadUrl: function (response) {
-        this.form.photo = "http://gvcdn.molinmall.cn/" + response.key;
+        this.form.photo = response.data;
       },
       uploadUrl1: function (response) {
-        this.form.experiencePhoto = "http://gvcdn.molinmall.cn/" + response.key;
+        this.form.experiencePhoto = response.data;
       },
       uploadUrl2: function (response) {
-        this.form.greenPhoto = "http://gvcdn.molinmall.cn/" + response.key;
+        this.form.greenPhoto = response.data;
       },
       checkFileSize: function (file) {
         if (file.size > 1048576) {

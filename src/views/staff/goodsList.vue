@@ -88,7 +88,7 @@
           <el-input v-model="form.goodName" placeholder="请输入商品名称" style="width: 400px" :disabled="true" />
         </el-form-item>
         <el-form-item label="价格" :label-width="formLabelWidth">
-          <el-input v-model="form.goodPrice" placeholder="请输入起拍价" style="width: 400px" :disabled="true" />
+          <el-input v-model="form.goodPrice" placeholder="请输入起拍价" style="width: 400px" />
         </el-form-item>
         <el-form-item label="持有者ID" :label-width="formLabelWidth">
           <el-input v-model="form.userId" placeholder="请输入持有者ID" style="width: 400px" />

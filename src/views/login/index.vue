@@ -10,7 +10,7 @@
         <transition name="el-zoom-in-center">
           <div class="logo" v-show="show2">
             <div class="zhLogo">
-              <img src="../../assets/login/logo.png" alt="" />
+              <!-- <img src="../../assets/login/logo.png" alt="" /> -->
             </div>
           </div>
         </transition>

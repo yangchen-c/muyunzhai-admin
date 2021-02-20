@@ -148,7 +148,7 @@
         </el-form-item>
         <!-- 设置商品参数 ----------------------------------------------------------------------------------->
         <el-form-item label="列表图" :label-width="formLabelWidth">
-          <el-upload :data="uploadData1" :action="uploadPath" :show-file-list="false" :on-success="uploadUrl1"
+          <el-upload :headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadUrl1"
             :before-upload="checkFileSize" class="avatar-uploader" accept=".jpg, .jpeg, .png">
             <img v-if="form.show" :src="form.show" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -158,7 +158,7 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="商品轮播图" :label-width="formLabelWidth" prop="photo">
-          <el-upload :data="uploadData" :action="uploadPath" :on-success="handleGalleryUrl1" :on-remove="handleRemove1"
+          <el-upload :headers="headers" :action="uploadPath" :on-success="handleGalleryUrl1" :on-remove="handleRemove1"
             :before-upload="beforeUploadGetKey" multiple accept=".jpg, .jpeg, .png, .gif" list-type="picture-card"
             :file-list="form.banner1">
             <!-- <img v-for="item in form.photo.split(',')" :key="item.id" :src="item" alt class="avatar"> -->
@@ -168,7 +168,7 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="详情图" :label-width="formLabelWidth">
-          <el-upload :data="uploadData2" :action="uploadPath" :on-success="handleGalleryUrl2" :on-remove="handleRemove2"
+          <el-upload :headers="headers" :action="uploadPath" :on-success="handleGalleryUrl2" :on-remove="handleRemove2"
             :before-upload="beforeUploadGetKey2" multiple accept=".jpg, .jpeg, .png, .gif" list-type="picture-card"
             :file-list="form.banner2">
             <i class="el-icon-plus" />
@@ -250,6 +250,9 @@
     sessionList1,
   } from "@/api/api";
   import Pagination from "@/components/Pagination"; // Secondary package based on el-pagination
+  import {
+    getToken
+  } from '@/utils/auth'
 
   export default {
     name: "Stafff",
@@ -354,6 +357,13 @@
         formLabelWidth: "100px",
       };
     },
+    computed: {
+      headers() {
+        return {
+          Authorization: getToken()
+        }
+      }
+    },
     created() {
       this.getList();
       this.getsessionList(); //场次
@@ -363,7 +373,7 @@
       // 文件上传       
       // 列表图
       uploadUrl1: function (response) {
-        this.form.show = "http://gvcdn.molinmall.cn/" + response.key;
+        this.form.show = response.data;
       },
       // uploadUrl: function (response) {
       //   this.form.photo = "http://gvcdn.molinmall.cn/" + response.key;
@@ -377,7 +387,7 @@
       // 详情图
       handleGalleryUrl2(res, file, fileList) {
         // console.log(res)
-        const banner1 = "http://gvcdn.molinmall.cn/" + res.key;
+        const banner1 = res.data;
         this.form.detail1.push(banner1)
         this.form.detail = this.form.detail1.join(',')
 
@@ -403,7 +413,7 @@
       // 轮播图
       handleGalleryUrl1(res, file, fileList) {
         // console.log(res)
-        const banner = "http://gvcdn.molinmall.cn/" + res.key;
+        const banner = res.data;
         this.form.photo1.push(banner)
         this.form.photo = this.form.photo1.join(',')
 

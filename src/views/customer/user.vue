@@ -125,7 +125,8 @@
           <el-input v-model="form.aliPayName" placeholder="请输入支付宝姓名" style="width: 400px" />
         </el-form-item>
         <el-form-item label="支付宝截图" :label-width="formLabelWidth">
-          <el-upload :data="uploadData" :action="uploadPath" :show-file-list="false" :on-success="uploadUrl"
+          <!-- <el-upload :data="uploadData" :action="uploadPath" :show-file-list="false" :on-success="uploadUrl" -->
+          <el-upload :headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadUrl"
             :before-upload="checkFileSize" class="avatar-uploader" accept=".jpg, .jpeg, .png">
             <img v-if="form.aliPayCode" :src="form.aliPayCode" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -138,7 +139,8 @@
           <el-input v-model="form.wxId" placeholder="请输入微信号" style="width: 400px" />
         </el-form-item>
         <el-form-item label="微信截图" :label-width="formLabelWidth">
-          <el-upload :data="uploadData1" :action="uploadPath" :show-file-list="false" :on-success="uploadUrl1"
+          <!-- <el-upload :data="uploadData1" :action="uploadPath" :show-file-list="false" :on-success="uploadUrl1" -->
+          <el-upload :headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadUrl1"
             :before-upload="checkFileSize" class="avatar-uploader" accept=".jpg, .jpeg, .png">
             <img v-if="form.wxCode" :src="form.wxCode" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -205,6 +207,10 @@
     detailUpdate, //余额更新接口
     uploadPath,
   } from "@/api/api";
+  import {
+    getToken
+  } from '@/utils/auth'
+
   // import tableC from '@/components/Table/index'
   import Pagination from "@/components/Pagination"; // Secondary package based on el-pagination
 
@@ -323,6 +329,13 @@
         },
       };
     },
+    computed: {
+      headers() {
+        return {
+          Authorization: getToken()
+        }
+      }
+    },
     created() {
       this.getList();
       this.getShopList();
@@ -357,10 +370,12 @@
       // 余额end
       // 文件上传
       uploadUrl: function (response) {
-        this.form.aliPayCode = "http://gvcdn.molinmall.cn/" + response.key;
+        // this.form.aliPayCode = "http://gvcdn.molinmall.cn/" + response.key;
+        this.form.aliPayCode = response.data;
       },
       uploadUrl1: function (response) {
-        this.form.wxCode = "http://gvcdn.molinmall.cn/" + response.key;
+        // this.form.wxCode = "http://gvcdn.molinmall.cn/" + response.key;
+        this.form.wxCode = response.data;
       },
       checkFileSize: function (file) {
         if (file.size > 1048576) {

@@ -236,6 +236,43 @@ export const constantRouterMap = [
     ]
   },
 
+
+  // 团队管理
+  {
+    path: '/team',
+    component: Layout,
+    redirect: 'noredirect',
+    alwaysShow: true,
+    name: 'team',
+    meta: {
+      title: '团队管理',
+      icon: 'goods_list'
+    },
+    children: [
+      {
+        path: 'teamf',
+        component: () => import('@/views/team/teamf'),
+        name: 'teamf',
+        meta: {
+          // perms: ['GET /admin/user/list'],
+          title: '奖励设置',
+          // affix: true
+        }
+      },
+      {
+        path: 'teamAdmin',
+        component: () => import('@/views/team/teamAdmin'),
+        name: 'teamAdmin',
+        meta: {
+          // perms: ['GET /admin/user/list'],
+          title: '团队管理',
+          // affix: true
+        }
+      }
+    ]
+  },
+
+
   // 轮播图管理
   {
     path: '/banner',

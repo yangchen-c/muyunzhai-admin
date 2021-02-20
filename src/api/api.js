@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
 // 上传文件
-// const uploadPath = process.env.VUE_APP_BASE_API + '/upload'
-const uploadPath = 'https://upload.qiniup.com/'
+const uploadPath = process.env.VUE_APP_BASE_API + 'upload'
+// const uploadPath = 'https://upload.qiniup.com/'
 export { uploadPath }
 
 export function uploadFile(data) {
@@ -517,6 +517,16 @@ export function articleDelete(params) {
   })
 }
 
+
+// -----------------------------------------------------------------------------------
+// 团队下级管理
+export function teamList(params, params1) {
+  return request({
+    url: `user/groupOrder/${params.id}`,
+    method: 'get',
+    params: params1
+  })
+}
 
 // 测试用接口——————————————————————————————————————————
 export function ceshiList(params) {

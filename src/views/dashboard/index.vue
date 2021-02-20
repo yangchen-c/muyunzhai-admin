@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-editor-container">
-    <h1>墨林益拍</h1>
+    <h1>沐云斋</h1>
   </div>
 </template>
 

@@ -85,7 +85,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-         <el-form-item label="排序" :label-width="formLabelWidth">
+        <el-form-item label="排序" :label-width="formLabelWidth">
           <el-input v-model="form.sort" placeholder="请输入排序" style="width: 400px" />
         </el-form-item>
         <el-form-item label="新人体验开关" :label-width="formLabelWidth">
@@ -98,7 +98,7 @@
         </el-form-item>
         <el-form-item label="场次展示图" :label-width="formLabelWidth">
           <!-- :headers="headers" -->
-          <el-upload :data="uploadData" :action="uploadPath" :show-file-list="false" :on-success="uploadUrl"
+          <el-upload :headers="headers" :action="uploadPath" :show-file-list="false" :on-success="uploadUrl"
             :before-upload="checkFileSize" class="avatar-uploader" accept=".jpg, .jpeg, .png">
             <img v-if="form.photo" :src="form.photo" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon" />
@@ -127,6 +127,9 @@
     shopList1,
   } from "@/api/api";
   import Pagination from "@/components/Pagination"; // Secondary package based on el-pagination
+  import {
+    getToken
+  } from '@/utils/auth'
 
   export default {
     name: "Stafff",
@@ -186,6 +189,13 @@
         formLabelWidth: "100px",
       };
     },
+    computed: {
+      headers() {
+        return {
+          Authorization: getToken()
+        }
+      }
+    },
     created() {
       this.getShopList();
       this.getList();
@@ -193,7 +203,7 @@
     methods: {
       // 文件上传
       uploadUrl: function (response) {
-        this.form.photo = "http://gvcdn.molinmall.cn/" + response.key;
+        this.form.photo = response.data;
         // console.log(response.key);
       },
       checkFileSize: function (file) {
@@ -289,7 +299,7 @@
       addSubmit() {
         // this.btnLoading = true
         if (this.form.id) {
-           if (this.form.state == '展示') {
+          if (this.form.state == '展示') {
             this.form.state = 0
           } else if (this.form.state == '不展示') {
             this.form.state = 1

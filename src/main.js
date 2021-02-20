@@ -22,6 +22,12 @@ import permission from '@/directive/permission/index.js' // 权限判断指令
 
 import Print from '@/utils/print' // 打印
 import VueParticles from 'vue-particles'
+
+import Vue2OrgTree from 'vue-tree-color'
+Vue.use(Vue2OrgTree)
+
+
+
 Vue.use(VueParticles)
 
 Vue.use(Print)
